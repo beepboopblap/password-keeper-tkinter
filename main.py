@@ -44,25 +44,7 @@ def main():
         
     def del_pass():
 
-        passwords = []
-
-        with (open("passwords.txt", "rb")) as openfile:
-            while True:
-                try:
-                    passwords.append(pickle.load(openfile))
-                except EOFError:
-                    break
-
-
-        user_inp = input("Enter the number to delete: ")
-
-        passwords = [x for x in passwords if x[1] != user_inp]
-        
-    
-        pickle.dump(passwords, open("passwords.txt", "ab"))
-        print(f"Password and Title for number {user_inp} has been deleted")
-
-
+        pass
 
     def view_pass():
 
