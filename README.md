@@ -1,6 +1,9 @@
 # Password-Keeper-tkinter
 
+*Only created the login screen so far*
+
 - A Password keeper made using Tkinter
+- The GUI looks ugly for now, will change it after it is fully functionable
 
 
 # Usage
