@@ -1,18 +1,26 @@
 from tkinter import *
+from datetime import datetime
 import tkinter as tk
 import os
-import pickle
-from datetime import datetime
+import pickle as pickle
+import stdiomask
+
+
+global password_list
 
 
 
 def main():
 
 
+
     def dump():
 
         global login
+        global passwords
+
         login = pickle.load(open("login.txt", "rb")) 
+        passwords = pickle.load(open("passwords.txt", "rb"))
 
 
     def exit_app():
@@ -22,17 +30,60 @@ def main():
     
     def create_pass():
 
-        pass
+ 
+        title = input("Enter Title following by the password: ")
+        password = stdiomask.getpass("Enter password for the title: ")
+        
+        final_pass = title, ":", password
+        
+        pickle.dump(final_pass, open("passwords.txt", "ab"))
 
-    
+
+        print("Password added for:", title)
+
+        
     def del_pass():
 
-        pass
+        passwords = []
+
+        with (open("passwords.txt", "rb")) as openfile:
+            while True:
+                try:
+                    passwords.append(pickle.load(openfile))
+                except EOFError:
+                    break
+
+
+        user_inp = input("Enter the number to delete: ")
+
+        passwords = [x for x in passwords if x[1] != user_inp]
+        
+    
+        pickle.dump(passwords, open("passwords.txt", "ab"))
+        print(f"Password and Title for number {user_inp} has been deleted")
+
 
 
     def view_pass():
 
-        pass
+        global passwords
+
+        passwords = []
+
+        with (open("passwords.txt", "rb")) as openfile:
+            while True:
+                try:
+                    passwords.append(pickle.load(openfile))
+                except EOFError:
+                    break
+        
+        for i in passwords:
+            i = str(i)
+            i = i.replace("(", "")
+            i = i.replace(")", "")
+            i = i.replace(",", "")
+            i = i.replace("'", "")
+            print(i,"\n")
 
 
     def home_screen():
@@ -46,7 +97,7 @@ def main():
         window3.resizable(0,0)
 
         
-        home_label = tk.Label(window3, text="Password Manager", font=("Calibri", 31)) 
+        home_label = tk.Label(window3, text="Password Keeper", font=("Calibri", 31)) 
         home_label.grid(padx=(80,0), pady=(0,0))
         button = tk.Button(window3, text="Add", command=create_pass)
         button.grid(padx=(80,0), pady=(120,0))
@@ -80,7 +131,7 @@ def main():
         current_time = now.strftime("%H:%M:%S")
 
         if user_password == login:
-            print("Logged in at:", current_time)
+            print("Logged in at:", current_time, "\n")
             home_screen()
 
         else:
